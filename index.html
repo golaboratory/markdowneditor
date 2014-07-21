@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-
+    <meta charset="utf-8">
     <script src="./js/mde.js"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
@@ -13,7 +13,14 @@
 
             <div class="col-md-12">
 
-                <textarea id="textareaTest" cols="100" rows="20"></textarea>
+                <textarea id="textareaTest" cols="100" rows="20">
+                    イタリック体を使うには _ か * で囲みます。
+                    その際前後に 半角スペース か 改行文字 が必要となります。
+                    入れ忘れるとイタリック体になりません。
+                    太字を使うには __ か ** で囲みます。
+                    イタリック同様 半角スペース か 改行文字 が必要になります。
+                    こちらも忘れると太字になりません。
+                </textarea>
 
             </div>
 
@@ -104,7 +111,7 @@
             mde.appendUnorderedList();
         }
 
-        document.getElementById('btnul').onclick = function(){
+        document.getElementById('btnol').onclick = function(){
             mde.appendOrderedList();
         }
 

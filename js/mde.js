@@ -88,23 +88,35 @@ Mde.prototype.insertHeading6 = function(){
 }
 
 /**
- *
+ * This method is sandwiched between Strong Mark and selected Text
  */
 Mde.prototype.clipStrong = function(){
 
+    if (!this._isSelected()){ return; }
+
+    this._clipText('**');
+
 }
 
 /**
- *
+ * This method is sandwiched between Strike Through Mark and selected Text
  */
 Mde.prototype.clipStrikeThrough = function(){
 
+    if (!this._isSelected()){ return; }
+
+    this._clipText('~~');
+
 }
 
 /**
- *
+ * This method is sandwiched between Emphasis Mark and selected Text
  */
 Mde.prototype.clipEmphasis = function(){
+
+    if (!this._isSelected()){ return; }
+
+    this._clipText('*');
 
 }
 
@@ -113,6 +125,9 @@ Mde.prototype.clipEmphasis = function(){
  */
 Mde.prototype.clipBlockQuotes = function(){
 
+    if (!this._isSelected()){ return; }
+
+    this._insertLineTop('>');
 
 }
 
@@ -121,6 +136,10 @@ Mde.prototype.clipBlockQuotes = function(){
  */
 Mde.prototype.appendUnorderedList = function(){
 
+    if (!this._isSelected()){ return; }
+
+    this._insertLineTop('*');
+
 }
 
 /**
@@ -128,12 +147,22 @@ Mde.prototype.appendUnorderedList = function(){
  */
 Mde.prototype.appendOrderedList = function(){
 
+    if (!this._isSelected()){ return; }
+
+    this._insertLineTop('1.');
+
 }
 
 /**
- *
+ * Insert Horizontal Rule '- - -'
  */
 Mde.prototype.insertHorizontalRule = function(){
+
+    var value = this._textAreaElem.value;
+    var beforeText = value.substring(0, this._selectedStart);
+    var afterText = value.substring(this._selectedStart);
+
+    this._textAreaElem.value = beforeText + this._NEW_LNE + this._NEW_LNE + '- - -' +  this._NEW_LNE + this._NEW_LNE + afterText;
 
 }
 
@@ -158,7 +187,7 @@ Mde.prototype.insertImage = function(){
  */
 Mde.prototype._isSelected = function(){
 
-    return (this._textAreaElem.selectionStart != this._textAreaElem.selectionEnd);
+    return (this._selectionStart() != this._selectionEnd());
 
 }
 
@@ -246,5 +275,54 @@ Mde.prototype._split = function(value /* String */){
     value = value.replace(/\r/g, '\n');
 
     return value.split('\n');
+
+}
+
+/**
+ *
+ * @param clipMark {String}
+ * @private
+ */
+Mde.prototype._clipText = function(clipMark /* String */){
+
+    var value = this._textAreaElem.value;
+    var beforeText = value.substring(0, this._selectedStart);
+    var selectedText = value.substring(this._selectedStart, this._selectedEnd);
+    var afterText = value.substring(this._selectedEnd);
+
+    selectedText = ' ' + clipMark + selectedText + clipMark + ' ';
+    afterText = selectedText + afterText;
+
+    this._textAreaElem.value = beforeText + afterText;
+
+}
+
+/**
+ *
+ * @param insertMark {String}
+ * @private
+ */
+Mde.prototype._insertLineTop = function(insertMark /* String */){
+
+    var value = this._textAreaElem.value;
+    var lines = this._split(value);
+    var totalLength = 0;
+    var valueStack = '';
+
+    for (var i = 0;i < lines.length; i++){
+
+        totalLength += lines[i].length;
+
+        if (totalLength < this._selectedStart || totalLength - lines[i].length > this._selectedEnd) {
+
+            valueStack += lines[i] + this._NEW_LNE;
+            continue;
+        }
+
+        valueStack += insertMark + ' ' + lines[i] + this._NEW_LNE;
+
+    }
+
+    this._textAreaElem.value = valueStack;
 
 }
