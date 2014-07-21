@@ -5,8 +5,8 @@
 
 
 /**
- *
- * @param id {String}
+ * Mde(MarkDownEditor) is attached TextArea Element to implemented Markdown Util
+ * @param id {String} TextArea Element Id
  * @constructor
  */
 function Mde(id /* String */){
@@ -34,7 +34,7 @@ function Mde(id /* String */){
 }
 
 /**
- *
+ * This method is inserted Top Level Heading to Selected Text Head
  */
 Mde.prototype.insertHeading1 = function(){
 
@@ -43,7 +43,7 @@ Mde.prototype.insertHeading1 = function(){
 }
 
 /**
- *
+ * This method is inserted Level2Heading to Selected Text Head
  */
 Mde.prototype.insertHeading2 = function(){
 
@@ -52,7 +52,7 @@ Mde.prototype.insertHeading2 = function(){
 }
 
 /**
- *
+ * This method is inserted Level3Heading to Selected Text Head
  */
 Mde.prototype.insertHeading3 = function(){
 
@@ -61,7 +61,7 @@ Mde.prototype.insertHeading3 = function(){
 }
 
 /**
- *
+ * This method is inserted Level4Heading to Selected Text Head
  */
 Mde.prototype.insertHeading4 = function(){
 
@@ -70,7 +70,7 @@ Mde.prototype.insertHeading4 = function(){
 }
 
 /**
- *
+ * This method is inserted Level5Heading to Selected Text Head
  */
 Mde.prototype.insertHeading5 = function(){
 
@@ -79,7 +79,7 @@ Mde.prototype.insertHeading5 = function(){
 }
 
 /**
- *
+ * This method is inserted Level6Heading to Selected Text Head
  */
 Mde.prototype.insertHeading6 = function(){
 
@@ -121,7 +121,7 @@ Mde.prototype.clipEmphasis = function(){
 }
 
 /**
- *
+ * this method is insert Block Quotes '>' to selected line top
  */
 Mde.prototype.clipBlockQuotes = function(){
 
@@ -132,7 +132,7 @@ Mde.prototype.clipBlockQuotes = function(){
 }
 
 /**
- *
+ * this method is insert Unordered List '*' to selected line top
  */
 Mde.prototype.appendUnorderedList = function(){
 
@@ -143,7 +143,7 @@ Mde.prototype.appendUnorderedList = function(){
 }
 
 /**
- *
+ * this method is insert Ordered List '1.' to selected line top
  */
 Mde.prototype.appendOrderedList = function(){
 
@@ -154,7 +154,7 @@ Mde.prototype.appendOrderedList = function(){
 }
 
 /**
- * Insert Horizontal Rule '- - -'
+ * this method is insert Horizontal Rule to next line
  */
 Mde.prototype.insertHorizontalRule = function(){
 
@@ -167,21 +167,29 @@ Mde.prototype.insertHorizontalRule = function(){
 }
 
 /**
- *
+ * This method is convert selected text to Linkage Style
  */
 Mde.prototype.convertLink = function(){
 
+    if (!this._isSelected()){return;}
+
+    this._convertLink('[@selected@](@url@)');
+
 }
 
 /**
- *
+ * This methods is convert selected text to Image Style
  */
 Mde.prototype.insertImage = function(){
 
+    if (!this._isSelected()){return;}
+
+    this._convertLink('![@selected@](@url@)');
+
 }
 
 /**
- *
+ * 
  * @returns {boolean}
  * @private
  */
@@ -324,5 +332,32 @@ Mde.prototype._insertLineTop = function(insertMark /* String */){
     }
 
     this._textAreaElem.value = valueStack;
+
+}
+
+/**
+ *
+ * @param linkTemplate
+ * @private
+ */
+Mde.prototype._convertLink = function(linkTemplate /* String */){
+
+    var value = this._textAreaElem.value;
+    var beforeText = value.substring(0, this._selectedStart);
+    var url = '';
+    var selectedText = value.substring(this._selectedStart, this._selectedEnd);
+    var afterText = value.substring(this._selectedEnd);
+
+    url = prompt('Enter Linkage URL');
+
+    if (url === ''){return;}
+
+    selectedText = linkTemplate.replace('@selected@', selectedText).replace('@url@',url);
+
+    afterText = ' ' + selectedText + ' ' + afterText;
+
+    this._textAreaElem.value = beforeText + afterText;
+
+
 
 }
