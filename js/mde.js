@@ -1,7 +1,8 @@
 /**
  * Created by go on 2014/07/19.
  */
-;'use strict';
+;
+'use strict';
 
 
 /**
@@ -9,7 +10,7 @@
  * @param id {String} TextArea Element Id
  * @constructor
  */
-function Mde(id /* String */){
+function Mde(id) {
 
     this._selectedStart = null;
     this._selectedEnd = null;
@@ -18,7 +19,7 @@ function Mde(id /* String */){
     var textAreaElem = document.getElementById(id);
     var self = this;
 
-    if (!textAreaElem){
+    if (!textAreaElem) {
 
         console.log('not found element :' + id);
         return;
@@ -26,137 +27,137 @@ function Mde(id /* String */){
     }
 
     this._textAreaElem = textAreaElem;
-    this._textAreaElem.onblur = function(){
+    this._textAreaElem.onblur = function () {
         self._selectedStart = self._selectionStart();
         self._selectedEnd = self._selectionEnd();
-    }
+    };
 
 }
 
 /**
  * This method is inserted Top Level Heading to Selected Text Head
  */
-Mde.prototype.insertHeading1 = function(){
+Mde.prototype.insertHeading1 = function () {
 
     this._insertHeading(1);
 
-}
+};
 
 /**
  * This method is inserted Level2Heading to Selected Text Head
  */
-Mde.prototype.insertHeading2 = function(){
+Mde.prototype.insertHeading2 = function () {
 
     this._insertHeading(2);
 
-}
+};
 
 /**
  * This method is inserted Level3Heading to Selected Text Head
  */
-Mde.prototype.insertHeading3 = function(){
+Mde.prototype.insertHeading3 = function () {
 
     this._insertHeading(3);
 
-}
+};
 
 /**
  * This method is inserted Level4Heading to Selected Text Head
  */
-Mde.prototype.insertHeading4 = function(){
+Mde.prototype.insertHeading4 = function () {
 
     this._insertHeading(4);
 
-}
+};
 
 /**
  * This method is inserted Level5Heading to Selected Text Head
  */
-Mde.prototype.insertHeading5 = function(){
+Mde.prototype.insertHeading5 = function () {
 
     this._insertHeading(5);
 
-}
+};
 
 /**
  * This method is inserted Level6Heading to Selected Text Head
  */
-Mde.prototype.insertHeading6 = function(){
+Mde.prototype.insertHeading6 = function () {
 
     this._insertHeading(6);
 
-}
+};
 
 /**
  * This method is sandwiched between Strong Mark and selected Text
  */
-Mde.prototype.clipStrong = function(){
+Mde.prototype.clipStrong = function () {
 
-    if (!this._isSelected()){ return; }
+    if (!this._isSelected()) { return; }
 
     this._clipText('**');
 
-}
+};
 
 /**
  * This method is sandwiched between Strike Through Mark and selected Text
  */
-Mde.prototype.clipStrikeThrough = function(){
+Mde.prototype.clipStrikeThrough = function () {
 
-    if (!this._isSelected()){ return; }
+    if (!this._isSelected()) { return; }
 
     this._clipText('~~');
 
-}
+};
 
 /**
  * This method is sandwiched between Emphasis Mark and selected Text
  */
-Mde.prototype.clipEmphasis = function(){
+Mde.prototype.clipEmphasis = function () {
 
-    if (!this._isSelected()){ return; }
+    if (!this._isSelected()) { return; }
 
     this._clipText('*');
 
-}
+};
 
 /**
  * this method is insert Block Quotes '>' to selected line top
  */
-Mde.prototype.clipBlockQuotes = function(){
+Mde.prototype.clipBlockQuotes = function () {
 
-    if (!this._isSelected()){ return; }
+    if (!this._isSelected()) { return; }
 
     this._insertLineTop('>');
 
-}
+};
 
 /**
  * this method is insert Unordered List '*' to selected line top
  */
-Mde.prototype.appendUnorderedList = function(){
+Mde.prototype.appendUnorderedList = function () {
 
-    if (!this._isSelected()){ return; }
+    if (!this._isSelected()) { return; }
 
     this._insertLineTop('*');
 
-}
+};
 
 /**
  * this method is insert Ordered List '1.' to selected line top
  */
-Mde.prototype.appendOrderedList = function(){
+Mde.prototype.appendOrderedList = function () {
 
-    if (!this._isSelected()){ return; }
+    if (!this._isSelected()) { return; }
 
     this._insertLineTop('1.');
 
-}
+};
 
 /**
  * this method is insert Horizontal Rule to next line
  */
-Mde.prototype.insertHorizontalRule = function(){
+Mde.prototype.insertHorizontalRule = function () {
 
     var value = this._textAreaElem.value;
     var beforeText = value.substring(0, this._selectedStart);
@@ -164,69 +165,69 @@ Mde.prototype.insertHorizontalRule = function(){
 
     this._textAreaElem.value = beforeText + this._NEW_LNE + this._NEW_LNE + '- - -' +  this._NEW_LNE + this._NEW_LNE + afterText;
 
-}
+};
 
 /**
  * This method is convert selected text to Linkage Style
  */
-Mde.prototype.convertLink = function(){
+Mde.prototype.convertLink = function () {
 
-    if (!this._isSelected()){return;}
+    if (!this._isSelected()) { return; }
 
     this._convertLink('[@selected@](@url@)');
 
-}
+};
 
 /**
  * This methods is convert selected text to Image Style
  */
-Mde.prototype.insertImage = function(){
+Mde.prototype.insertImage = function () {
 
-    if (!this._isSelected()){return;}
+    if (!this._isSelected()) { return; }
 
     this._convertLink('![@selected@](@url@)');
 
-}
+};
 
 /**
- * 
+ *
  * @returns {boolean}
  * @private
  */
-Mde.prototype._isSelected = function(){
+Mde.prototype._isSelected = function () {
 
     return (this._selectionStart() != this._selectionEnd());
 
-}
+};
 
 /**
  *
  * @returns {Number}
  * @private
  */
-Mde.prototype._selectionStart = function(){
+Mde.prototype._selectionStart = function () {
 
     return this._textAreaElem.selectionStart;
 
-}
+};
 
 /**
  *
  * @returns {Number}
  * @private
  */
-Mde.prototype._selectionEnd = function(){
+Mde.prototype._selectionEnd = function () {
 
     return this._textAreaElem.selectionEnd;
 
-}
+};
 
 /**
  *
  * @param headingLevel
  * @private
  */
-Mde.prototype._insertHeading = function(headingLevel /* Number */){
+Mde.prototype._insertHeading = function (headingLevel) {
 
     var headingMark = this._getHeadingMark(headingLevel);
     var value = this._textAreaElem.value;
@@ -234,7 +235,7 @@ Mde.prototype._insertHeading = function(headingLevel /* Number */){
     var selectedText = '';
     var afterText = '';
 
-    if (this._isSelected()){
+    if (this._isSelected()) {
 
         selectedText = value.substring(this._selectedStart, this._selectedEnd);
         afterText = value.substring(this._selectedEnd);
@@ -245,14 +246,14 @@ Mde.prototype._insertHeading = function(headingLevel /* Number */){
 
         afterText = value.substring(this._selectedStart);
 
-        if (afterText === ''){ return; }
+        if (afterText === '') { return; }
 
         afterText = this._NEW_LNE + headingMark + ' ' + afterText;
     }
 
     this._textAreaElem.value = beforeText + afterText;
 
-}
+};
 
 /**
  *
@@ -260,7 +261,7 @@ Mde.prototype._insertHeading = function(headingLevel /* Number */){
  * @returns {string}
  * @private
  */
-Mde.prototype._getHeadingMark = function(headingLevel /* Number */){
+Mde.prototype._getHeadingMark = function (headingLevel) {
 
     var headingMark = '';
     var i;
@@ -269,7 +270,7 @@ Mde.prototype._getHeadingMark = function(headingLevel /* Number */){
     }
 
     return headingMark;
-}
+};
 
 /**
  *
@@ -277,21 +278,21 @@ Mde.prototype._getHeadingMark = function(headingLevel /* Number */){
  * @returns {Array}
  * @private
  */
-Mde.prototype._split = function(value /* String */){
+Mde.prototype._split = function (value) {
 
     value = value.replace(/\r\n/g, '\n');
     value = value.replace(/\r/g, '\n');
 
     return value.split('\n');
 
-}
+};
 
 /**
  *
  * @param clipMark {String}
  * @private
  */
-Mde.prototype._clipText = function(clipMark /* String */){
+Mde.prototype._clipText = function (clipMark) {
 
     var value = this._textAreaElem.value;
     var beforeText = value.substring(0, this._selectedStart);
@@ -303,14 +304,14 @@ Mde.prototype._clipText = function(clipMark /* String */){
 
     this._textAreaElem.value = beforeText + afterText;
 
-}
+};
 
 /**
  *
  * @param insertMark {String}
  * @private
  */
-Mde.prototype._insertLineTop = function(insertMark /* String */){
+Mde.prototype._insertLineTop = function (insertMark) {
 
     var value = this._textAreaElem.value;
     var lines = this._split(value);
@@ -333,14 +334,14 @@ Mde.prototype._insertLineTop = function(insertMark /* String */){
 
     this._textAreaElem.value = valueStack;
 
-}
+};
 
 /**
  *
  * @param linkTemplate
  * @private
  */
-Mde.prototype._convertLink = function(linkTemplate /* String */){
+Mde.prototype._convertLink = function (linkTemplate){
 
     var value = this._textAreaElem.value;
     var beforeText = value.substring(0, this._selectedStart);
@@ -350,7 +351,7 @@ Mde.prototype._convertLink = function(linkTemplate /* String */){
 
     url = prompt('Enter Linkage URL');
 
-    if (url === ''){return;}
+    if (url === '') {return;}
 
     selectedText = linkTemplate.replace('@selected@', selectedText).replace('@url@',url);
 
@@ -360,4 +361,4 @@ Mde.prototype._convertLink = function(linkTemplate /* String */){
 
 
 
-}
+};
